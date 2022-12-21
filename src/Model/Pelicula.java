@@ -22,6 +22,9 @@ private Genero genero;
         this.genero = genero;
     }
 
+    public Pelicula() {
+    }
+    
     public String getTitulo() {
         return titulo;
     }

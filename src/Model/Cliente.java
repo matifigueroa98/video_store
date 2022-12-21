@@ -8,12 +8,17 @@ private String nombre;
 private String dni;
 private String telefono; 
 private String direccion;
+private Integer pelisAlquiladas;
 
-    public Cliente(String nombre,String dni, String telefono, String direccion) {
+    public Cliente(String nombre,String dni, String telefono, String direccion, Integer pelisAlquiladas) {
         this.nombre = nombre;
         this.dni = dni;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.pelisAlquiladas = pelisAlquiladas = 0;
+    }
+
+    public Cliente() {
     }
 
     public String getNombre() {
@@ -38,6 +43,27 @@ private String direccion;
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }  
+    } 
 
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public Integer getPelisAlquiladas() {
+        return pelisAlquiladas;
+    }
+
+    public void setPelisAlquiladas(Integer pelisAlquiladas) {
+        this.pelisAlquiladas = pelisAlquiladas;
+    }
+    
+    public void arrayAlquileres (){ // falta resolver
+       for (int i=0;i< getPelisAlquiladas();i++){
+         
+       }
+    }
 }

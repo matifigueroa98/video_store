@@ -25,6 +25,12 @@ private Genero genero;
     public Pelicula() {
     }
     
+    public String verPelicula (){ // metodo sin usar aun
+        return "Titulo: "+titulo+"\nFecha de lanzamiento: " + fechaDeLanzamiento + "\nDuracion: " +
+        duracionEnMinutos + "\nPais de origen: " + paisDeOrigen + "\nDescripcion: " + descripcion + "\nCopias Disponibles: " + copiasDisponibles + "\nGenero: "
+        + genero;
+    }
+    
     public String getTitulo() {
         return titulo;
     }
@@ -81,4 +87,5 @@ private Genero genero;
         this.genero = genero;
     }
 
+    
 }

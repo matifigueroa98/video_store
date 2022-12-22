@@ -1,16 +1,17 @@
 
 package Model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
 public class Alquiler {
     private Date fechaAlquiler;
-    private Date fechaDevolucion;
+    private LocalDate fechaDevolucion;
     private Cliente cliente;
     private Pelicula pelicula;
 
-    public Alquiler(Date fechaAlquiler, Date fechaDevolucion, Cliente cliente, Pelicula pelicula) {
+    public Alquiler(Date fechaAlquiler, LocalDate fechaDevolucion, Cliente cliente, Pelicula pelicula) {
         this.fechaAlquiler = fechaAlquiler;
         this.fechaDevolucion = fechaDevolucion;
         this.cliente = cliente;
@@ -26,11 +27,11 @@ public class Alquiler {
         this.fechaAlquiler = fechaAlquiler;
     }
 
-    public Date getFechaDevolucion() {
+    public LocalDate getFechaDevolucion() {
         return fechaDevolucion;
     }
 
-    public void setFechaDevolucion(Date fechaDevolucion) {
+    public void setFechaDevolucion(LocalDate fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
 

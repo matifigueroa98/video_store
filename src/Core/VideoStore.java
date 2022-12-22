@@ -2,15 +2,19 @@
 package Core;
 
 import Model.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 
 public class VideoStore {
-   private ArrayList <Alquiler> alquilerPeliculas;
-   private ArrayList <Cliente> clientes;
-   private ArrayList <Pelicula> peliculas;
+   private ArrayList <Alquiler> alquilerPeliculas = new ArrayList <>();
+   private ArrayList <Cliente> clientes = new ArrayList <>();
+   private ArrayList <Pelicula> peliculas = new ArrayList <>();
    private String name;
    private final Scanner entrada = new Scanner (System.in);
 
@@ -19,9 +23,8 @@ public class VideoStore {
         this.clientes = clientes;
         this.peliculas = peliculas;
         this.name = name;
-    }
-
-    public VideoStore() {
+        this.cargarClientes();
+        this.cargarPeliculas();
     }
 
     public ArrayList<Alquiler> getAlquilerPeliculas() {
@@ -60,6 +63,15 @@ public class VideoStore {
         peliculas.add(pelicula);
     }
     
+      public void listaDePeliculas (){
+          Integer contador = 1;
+          System.out.println("----------------------------");
+        for (Pelicula p: peliculas){
+            System.out.println((contador)+") "+p.getTitulo());
+            contador++;
+        }
+    }
+    
     public void agregarCliente (Cliente cliente){
         clientes.add (cliente);
     }
@@ -70,24 +82,29 @@ public class VideoStore {
 
    public void alquilarPelicula () {
        String titulo;
-       System.out.print("ingrese el nombre de la pelicula que desea alquilar: ");
+       System.out.print("Ingrese el nombre de la pelicula que desea alquilar: ");
        titulo = entrada.nextLine();
    }
 
    public void generarBoleta (Cliente cliente, Pelicula peli){
-       Date dato = new Date ();
-       // inicializar fechaDev
-       Alquiler alquiler = new Alquiler (dato, fechaDev, cliente, peli);
+       Date fechaAlquiler = new Date ();
+       LocalDate fechaDevolucion = LocalDate.now();
+       fechaDevolucion = fechaDevolucion.plusDays(3);
+      
+       Alquiler alquiler = new Alquiler (fechaAlquiler, fechaDevolucion, cliente, peli);
        alquilerPeliculas.add(alquiler);
-       System.out.println("alquiler "+alquiler.getFechaAlquiler());
-       
+       System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(fechaAlquiler)); // obtiene la fecha del alquiler 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        System.out.println(formatter.format(fechaDevolucion)); // obtiene la fecha de la devolucion
+     
    }
-   
-   
    
    public void historialAlquileres (Cliente clientes){
        if (clientes.getPelisAlquiladas() != 0){
-        // completar
+           System.out.println("HISTORIAL ALQUILERES");
+        for (int i=0;i< this.alquilerPeliculas.size();i++){
+           // COMPLETAR MAS ADELANTE
+       } 
        } else {
            System.out.println("el cliente no alquilo en el VideoStore");
        }
@@ -99,19 +116,43 @@ public class VideoStore {
       System.out.println("Bienvenidos al Video Store! Que desea hacer?");
       System.out.println("1. Alquilar pelicula"); 
       System.out.println("2. Ver alquileres vigentes");
-      menu = entrada.nextInt();
+      System.out.println("3. Ver lista de peliculas");
+
+      menu = Integer.parseInt(JOptionPane.showInputDialog("Digite una opcion"));
       switch (menu){
-          case 1: mostrarGeneros ();
-                
-              break;
-          case 2: generarBoleta(new Cliente (),new Pelicula ());
+          case 1: this.alquilarPelicula(); 
+             break;
+          case 2: this.generarBoleta(new Cliente (),new Pelicula ());
+             break;
+          case 3: this.listaDePeliculas();
+             break;
       }
       
       
   }
   
-  private void cargarPeliculas(){
+   private void cargarClientes(){
+     Cliente cliente1 = new Cliente ("Mati", "40864421", "2236036523", "Calle 321", 0);
+     Cliente cliente2 = new Cliente ("Agus", "39456534", "2233464242", "abuela lalala", 0);
+     Cliente cliente3 = new Cliente ("Pepe", "38674856", "2235676228", "constitucion 3446", 0);
+     Cliente cliente4 = new Cliente ("Fran", "35876756", "2235356991", "Italia 435", 0);
+     
+       agregarCliente(cliente1);
+       agregarCliente(cliente2);
+       agregarCliente(cliente3);
+       agregarCliente(cliente4);
+   }
+   
+  public void cargarPeliculas(){
       
+     Pelicula pelicula1 = new Pelicula ("Shrek 3", "18/05/2007",93, "EEUU", "Shrek intenta salvar el reino Muy Muy Lejano", 10, Genero.AVENTURA);
+     Pelicula pelicula2 = new Pelicula ("Madagascar", "27/05/2005",86, "EEUU", "Cuatro animales del zoológico de Central Park", 10, Genero.COMEDIA);
+     Pelicula pelicula3 = new Pelicula ("Kungu Fu Panda", "03/07/2008",121, "CHINA", "Un panda que come fideos", 10, Genero.ACCION);
+     Pelicula pelicula4 = new Pelicula ("Cómo entrenar a tu dragón 3", "23/11/2019",77, "EEUU", "Hipo y Desdentado buscan un legendario paraíso", 10, Genero.DRAMA);
+      agregarPelicula(pelicula1); 
+      agregarPelicula(pelicula2);
+      agregarPelicula(pelicula3);
+      agregarPelicula(pelicula4);
   }
   private void mostrarGeneros (){
     Integer contador = 1;

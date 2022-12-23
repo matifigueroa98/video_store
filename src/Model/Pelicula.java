@@ -11,6 +11,7 @@ private String paisDeOrigen;
 private String descripcion;
 private Integer copiasDisponibles;
 private Genero genero;
+private Integer cantidad;
 
     public Pelicula(String titulo, String fechaDeLanzamiento, Integer duracionEnMinutos, String paisDeOrigen, String descripcion, Integer copiasDisponibles, Genero genero) {
         this.titulo = titulo;
@@ -29,6 +30,11 @@ private Genero genero;
         return "Titulo: "+titulo+"\nFecha de lanzamiento: " + fechaDeLanzamiento + "\nDuracion: " +
         duracionEnMinutos + "\nPais de origen: " + paisDeOrigen + "\nDescripcion: " + descripcion + "\nCopias Disponibles: " + copiasDisponibles + "\nGenero: "
         + genero;
+    }
+    
+    public void peliAlquilada (){ // cuando se alquila una pelicula se aumenta el contador de las veces alquiladas y se saca una del stock
+        this.copiasDisponibles--;
+        this.cantidad++;
     }
     
     public String getTitulo() {
@@ -87,5 +93,14 @@ private Genero genero;
         this.genero = genero;
     }
 
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    
     
 }

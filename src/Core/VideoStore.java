@@ -19,7 +19,7 @@ public class VideoStore {
         this.clientes = clientes;
         this.peliculas = peliculas;
         this.name = name;
-        this.cargarAlquileres();
+        this.cargarDatos();
     }
 
     public ArrayList<Alquiler> getAlquilerPeliculas() {
@@ -82,30 +82,29 @@ public class VideoStore {
        titulo = entrada.nextLine();
         System.out.println("Ingrese su DNI");
        dni = entrada.nextLine();
-       if (existenciaPelicula(titulo) == true){
-        Pelicula peli = new Pelicula ();
-        peli.peliAlquilada();
+       if (existenciaPelicula(titulo) != null){ // CHECK
+        Pelicula existePeli = existenciaPelicula(titulo); // double check
+       
        } else {
            System.out.println("la pelicula que ha ingresado no existe");
        }
        if (existenciaCliente(dni) == true){
          //  generarBoleta(cliente, peli);
        } else {
-           pedirDatosCliente();
+           altaDeCliente();
        }
-       
-       
-        
+      
+           
     }
     
-    public Boolean existenciaPelicula (String pelicula){ 
-        Boolean flag = false;   
+    public Pelicula existenciaPelicula (String pelicula){ // encontrar la pelicula mediante el toFind
+        Pelicula toFind = null;   
         for (int i = 0; i< peliculas.size(); i++){
             if (peliculas.get(i).getTitulo().equalsIgnoreCase(pelicula)){
-                flag = true;     
+                toFind = peliculas.get(i);     
             }             
            }
-        return flag;
+        return toFind;
      }
     
      public Boolean existenciaCliente (String dni){ // compruebo si el dni del cliente fue ingresado en el sistema
@@ -118,8 +117,8 @@ public class VideoStore {
         return flag;
      }
    
-   public void pedirDatosCliente (){ // nuevo cliente
-       Cliente c = new Cliente ();
+   public void altaDeCliente (){ // nuevo cliente
+       Cliente c = new Cliente (); 
        System.out.println("ingrese el nombre del cliente");
        c.setNombre(entrada.nextLine());
        System.out.println("ingrese el DNI del cliente");
@@ -128,8 +127,7 @@ public class VideoStore {
        c.setTelefono(entrada.nextLine());
        System.out.println("ingrese la direccion del cliente");
        c.setDireccion(entrada.nextLine());
-       agregarCliente(c);
-       
+       clientes.add(c);
    }
 
    public void generarBoleta (Cliente cliente, Pelicula peli){
@@ -173,7 +171,7 @@ public class VideoStore {
       
   }
    
-   private void cargarAlquileres(){ // clientes y peliculas existentes
+   private void cargarDatos(){ // clientes y peliculas existentes
      Cliente cliente1 = new Cliente ("Mati", "40864421", "2236036523", "Calle 321", 0);
      Cliente cliente2 = new Cliente ("Agus", "39456534", "2233464242", "abuela lalala", 0);
      Cliente cliente3 = new Cliente ("Pepe", "38674856", "2235676228", "constitucion 3446", 0);
@@ -184,8 +182,8 @@ public class VideoStore {
        agregarCliente(cliente3);
        agregarCliente(cliente4);
        
-     Pelicula pelicula1 = new Pelicula ("Shrek 3", "18/05/2007",93, "EEUU", "Shrek intenta salvar el reino Muy Muy Lejano", 10, Genero.AVENTURA);
-     Pelicula pelicula2 = new Pelicula ("Madagascar", "27/05/2005",86, "EEUU", "Cuatro animales del zoológico de Central Park", 10, Genero.COMEDIA);
+     Pelicula pelicula1 = new Pelicula ("Shrek 3", "18/05/2007",93, "EEUU", "Shrek intenta salvar el reino Muy Muy Lejano", 0, Genero.AVENTURA);
+     Pelicula pelicula2 = new Pelicula ("Madagascar", "27/05/2005",86, "EEUU", "Cuatro animales del zoológico de Central Park", 2, Genero.COMEDIA);
      Pelicula pelicula3 = new Pelicula ("Kungu Fu Panda", "03/07/2008",121, "CHINA", "Un panda que come fideos", 10, Genero.ACCION);
      Pelicula pelicula4 = new Pelicula ("Como entrenar a tu dragon 3", "23/11/2019",77, "EEUU", "Hipo y Desdentado buscan un legendario paraíso", 10, Genero.DRAMA);
      

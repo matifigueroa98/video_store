@@ -20,6 +20,12 @@ private Integer pelisAlquiladas;
 
     public Cliente() {
     }
+    
+    public void arrayAlquileres (){ // falta resolver
+       for (int i=0;i< getPelisAlquiladas();i++){
+         
+       }
+    }
 
     public String getNombre() {
         return nombre;
@@ -59,11 +65,5 @@ private Integer pelisAlquiladas;
 
     public void setPelisAlquiladas(Integer pelisAlquiladas) {
         this.pelisAlquiladas = pelisAlquiladas;
-    }
-    
-    public void arrayAlquileres (){ // falta resolver
-       for (int i=0;i< getPelisAlquiladas();i++){
-         
-       }
     }
 }

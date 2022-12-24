@@ -9,9 +9,9 @@ private String fechaDeLanzamiento;
 private Integer duracionEnMinutos;
 private String paisDeOrigen;
 private String descripcion;
-private Integer copiasDisponibles;
+private Integer copiasDisponibles = 10;
 private Genero genero;
-private Integer cantidad;
+private Integer vecesAlquilada = 0;
 
     public Pelicula(String titulo, String fechaDeLanzamiento, Integer duracionEnMinutos, String paisDeOrigen, String descripcion, Integer copiasDisponibles, Genero genero) {
         this.titulo = titulo;
@@ -34,7 +34,7 @@ private Integer cantidad;
     
     public void peliAlquilada (){ // cuando se alquila una pelicula se aumenta el contador de las veces alquiladas y se saca una del stock
         this.copiasDisponibles--;
-        this.cantidad++;
+        this.vecesAlquilada++;
     }
     
     public String getTitulo() {
@@ -93,12 +93,12 @@ private Integer cantidad;
         this.genero = genero;
     }
 
-    public Integer getCantidad() {
-        return cantidad;
+    public Integer getVecesAlquilada() {
+        return vecesAlquilada;
     }
 
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
+    public void setVecesAlquilada(Integer vecesAlquilada) {
+        this.vecesAlquilada = vecesAlquilada;
     }
 
     

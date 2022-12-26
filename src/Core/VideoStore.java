@@ -75,6 +75,14 @@ public class VideoStore {
         alquilerPeliculas.add(alquiler);
     }
     
+    public void verAlquileresVigentes (){
+        for (Alquiler alquiler: alquilerPeliculas){
+            if (alquiler.consultarVigencia() != -1){
+                alquiler.mostrarAlquiler();
+            }
+        }
+    }
+    
     public void procedimientoAlquilerDePelicula (){ // a completar...
        String titulo;
        String dni;
@@ -82,18 +90,22 @@ public class VideoStore {
        titulo = entrada.nextLine();
         System.out.println("Ingrese su DNI");
        dni = entrada.nextLine();
-       if (existenciaPelicula(titulo) != null){ // CHECK
+        
+           if (existenciaPelicula(titulo) != null){ // CHECK
         Pelicula existePeli = existenciaPelicula(titulo); // double check
-       
+           System.out.println(existePeli); // triple check
+              generarBoleta(cliente, existePeli); // como agrego al cliente ya existente?
+              existePeli.peliAlquilada();
        } else {
            System.out.println("la pelicula que ha ingresado no existe");
-       }
-       if (existenciaCliente(dni) == true){
-         //  generarBoleta(cliente, peli);
+       } 
+       
+       if (existenciaCliente(dni) == true && existenciaPelicula(titulo) != null){
+           generarBoleta(new Cliente (),new Pelicula ());
        } else {
            altaDeCliente();
-       }
-      
+           generarBoleta(new Cliente (),new Pelicula ());
+       } 
            
     }
     
@@ -162,10 +174,11 @@ public class VideoStore {
       switch (menu){
           case 1: this.procedimientoAlquilerDePelicula(); 
              break; 
-          case 2: this.generarBoleta(new Cliente (),new Pelicula ());
+          case 2: this.verAlquileresVigentes();
              break;
           case 3: this.listaDePeliculas();
              break;
+          case 4: 
       }
       
       

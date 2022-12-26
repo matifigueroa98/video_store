@@ -17,6 +17,16 @@ public class Alquiler {
         this.pelicula = pelicula;
     }
     
+    public void mostrarAlquiler (){
+        System.out.println("el cliente: "+this.cliente.getNombre()+" alquilo "+this.pelicula.getTitulo()
+                + " en el dia: "+this.fechaAlquiler);
+    } 
+    
+    public int consultarVigencia() { //devuelve -1 si esta vencido, >= 0 si esta vigente
+        int vigencia = this.fechaDevolucion.compareTo(LocalDate.now());
+        return vigencia;
+    }
+    
 
     public LocalDate getFechaAlquiler() {
         return fechaAlquiler;

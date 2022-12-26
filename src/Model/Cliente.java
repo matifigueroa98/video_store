@@ -1,7 +1,6 @@
 
 package Model;
 
-
 public class Cliente {
     
 private String nombre;
@@ -19,12 +18,6 @@ private Integer pelisAlquiladas;
     }
 
     public Cliente() {
-    }
-    
-    public void arrayAlquileres (){ // falta resolver
-       for (int i=0;i< getPelisAlquiladas();i++){
-         
-       }
     }
 
     public String getNombre() {

@@ -100,7 +100,4 @@ private Integer vecesAlquilada = 0;
     public void setVecesAlquilada(Integer vecesAlquilada) {
         this.vecesAlquilada = vecesAlquilada;
     }
-
-    
-    
 }

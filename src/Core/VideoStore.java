@@ -84,30 +84,67 @@ public class VideoStore {
     }
     
     public void procedimientoAlquilerDePelicula (){ // a completar...
-       String titulo;
-       String dni;
-       System.out.print("Ingrese el nombre de la pelicula que desea alquilar: ");
-       titulo = entrada.nextLine();
-        System.out.println("Ingrese su DNI");
-       dni = entrada.nextLine();
-        
-           if (existenciaPelicula(titulo) != null){ // CHECK
-        Pelicula existePeli = existenciaPelicula(titulo); // double check
-           System.out.println(existePeli); // triple check
-              generarBoleta(cliente, existePeli); // como agrego al cliente ya existente?
-              existePeli.peliAlquilada();
-       } else {
-           System.out.println("la pelicula que ha ingresado no existe");
-       } 
        
-       if (existenciaCliente(dni) == true && existenciaPelicula(titulo) != null){
-           generarBoleta(new Cliente (),new Pelicula ());
-       } else {
-           altaDeCliente();
-           generarBoleta(new Cliente (),new Pelicula ());
-       } 
-           
+       Cliente client = procedimientoAgregarCliente();
+       Pelicula movie = procedimientoAgregarPelicula();
+     
+      }
+    
+    public Pelicula procedimientoAgregarPelicula (){
+       String titulo;
+       Pelicula movieExist = null;
+       Cliente client = procedimientoAgregarCliente();
+       
+       do{
+        System.out.print("Ingrese el nombre de la pelicula que desea alquilar: ");
+        titulo = entrada.nextLine();
+        movieExist = existenciaPelicula(titulo);
+            if (movieExist != null){
+              generarBoleta(client, movieExist); 
+              System.out.println("Se ha solicitado la pelicula: "+movieExist.getTitulo());
+              movieExist.peliAlquilada();
+            } else {
+              System.out.println("la pelicula que ha ingresado no existe, por favor vuelva a intentar"); 
+              }   
+        } while (movieExist == null);
+      
+       return movieExist;
     }
+      
+    public Cliente  procedimientoAgregarCliente (){
+         String dni;
+         Cliente client = null;
+       
+         do { // procedimiento para agregar cliente
+            System.out.print("Ingrese su DNI: ");
+            dni = entrada.nextLine();
+            client = buscarCliente(dni);
+            if (client == null){
+                
+              Integer newClient;
+              System.out.println("No se encuentra en el sistema de clientes. Desea agregar un nuevo cliente?");
+              System.out.println("Ingrese '1' si asi lo desea, '2' para volver a iniciar");
+              newClient = entrada.nextInt();
+              entrada.nextLine(); // Scanner clean
+              switch (newClient){
+                case 1 -> client = altaDeCliente();
+              }
+            }
+        }while (client == null);
+         
+         return client;
+    }
+    
+    
+    public Cliente buscarCliente (String dni){ // encontrar el dni del cliente mediante el toFind
+        Cliente toFind = null;   
+        for (int i = 0; i< clientes.size(); i++){
+            if (clientes.get(i).getDni().equalsIgnoreCase(dni)){
+                toFind = clientes.get(i);     
+            }             
+           }
+        return toFind;
+     }
     
     public Pelicula existenciaPelicula (String pelicula){ // encontrar la pelicula mediante el toFind
         Pelicula toFind = null;   
@@ -119,27 +156,31 @@ public class VideoStore {
         return toFind;
      }
     
-     public Boolean existenciaCliente (String dni){ // compruebo si el dni del cliente fue ingresado en el sistema
-        Boolean flag = false;   
-        for (int i = 0; i< clientes.size(); i++){
-            if (clientes.get(i).getDni().equalsIgnoreCase(dni)){
-                flag = true;     
-            }             
-           }
-        return flag;
-     }
+//     public Boolean existenciaCliente (String dni){ // compruebo si el dni del cliente fue ingresado en el sistema
+//        Boolean flag = false;   
+//        for (int i = 0; i< clientes.size(); i++){
+//            if (clientes.get(i).getDni().equalsIgnoreCase(dni)){
+//                flag = true;     
+//            }             
+//           }
+//        return flag;
+//     }
    
-   public void altaDeCliente (){ // nuevo cliente
+   public Cliente altaDeCliente (){ // nuevo cliente
        Cliente c = new Cliente (); 
-       System.out.println("ingrese el nombre del cliente");
+       System.out.println("Por favor ingrese los datos del NUEVO cliente");
+       System.out.println("--------------------------------------------");
+       System.out.print("Ingrese el nombre del cliente: ");
        c.setNombre(entrada.nextLine());
-       System.out.println("ingrese el DNI del cliente");
+       System.out.print("Ingrese el DNI del cliente: ");
        c.setDni(entrada.nextLine());
-       System.out.println("ingrese el telefono del cliente");
+       System.out.print("Ingrese el telefono del cliente: ");
        c.setTelefono(entrada.nextLine());
-       System.out.println("ingrese la direccion del cliente");
+       System.out.print("Ingrese la direccion del cliente: ");
        c.setDireccion(entrada.nextLine());
        clientes.add(c);
+       
+       return c;
    }
 
    public void generarBoleta (Cliente cliente, Pelicula peli){
@@ -165,10 +206,8 @@ public class VideoStore {
    
    public void menu (){
       int menu;
-      System.out.println("Bienvenidos al Video Store! Que desea hacer?");
-      System.out.println("1. Alquilar pelicula"); 
-      System.out.println("2. Ver alquileres vigentes");
-      System.out.println("3. Ver lista de peliculas");
+      JOptionPane.showMessageDialog(null, "Bienvenidos al Video Store! Que desea hacer? \n\n"
+              + "1. Alquilar pelicula \n2. Ver alquileres vigente \n3. Ver lista de peliculas");
 
       menu = Integer.parseInt(JOptionPane.showInputDialog("Digite una opcion"));
       switch (menu){
@@ -178,7 +217,7 @@ public class VideoStore {
              break;
           case 3: this.listaDePeliculas();
              break;
-          case 4: 
+          case 4: procedimientoAgregarCliente(); // test
       }
       
       
@@ -214,5 +253,4 @@ public class VideoStore {
     }
     
 }
-   
 }

@@ -59,5 +59,4 @@ public class Alquiler {
     public void setPelicula(Pelicula pelicula) {
         this.pelicula = pelicula;
     }
-    
 }

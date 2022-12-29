@@ -3,7 +3,6 @@ package Model;
 
 import java.time.LocalDate;
 
-
 public class Alquiler {
     private LocalDate fechaAlquiler;
     private LocalDate fechaDevolucion;
@@ -18,8 +17,7 @@ public class Alquiler {
     }
     
     public void mostrarAlquiler (){
-        System.out.println("el cliente: "+this.cliente.getNombre()+" alquilo "+this.pelicula.getTitulo()
-                + " en el dia: "+this.fechaAlquiler);
+        System.out.println("El cliente: "+this.cliente.getNombre()+" alquiló "+this.pelicula.getTitulo());
     } 
     
     public int consultarVigencia() { //devuelve -1 si esta vencido, >= 0 si esta vigente

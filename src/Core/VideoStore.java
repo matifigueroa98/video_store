@@ -2,6 +2,7 @@
 package Core;
 
 import Model.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -58,7 +59,7 @@ public class VideoStore {
         peliculas.add(pelicula);
     }
     
-      public void listaDePeliculas (){
+    public void listaDePeliculas (){
           Integer contador = 1;
           System.out.println("----------------------------");
         for (Pelicula p: peliculas){
@@ -83,44 +84,54 @@ public class VideoStore {
         }
     }
     
-    public void procedimientoAlquilerDePelicula (){ // a completar...
+    public Boolean verificarDisponibilidad (Pelicula pelicula){
+        Boolean flag = false;
+        for (int i=0; i< peliculas.size();i++){
+            if(peliculas.get(i).verificarCopiasDisponibles() > 0){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+    
+    public void procedimientoAlquilerDePelicula (){ 
        
        Cliente client = procedimientoAgregarCliente();
-       Pelicula movie = procedimientoAgregarPelicula();
+       Pelicula movie = procedimientoAgregarPelicula(client);
      
       }
     
-    public Pelicula procedimientoAgregarPelicula (){
+    public Pelicula procedimientoAgregarPelicula (Cliente client){
        String titulo;
-       Pelicula movieExist = null;
-       Cliente client = procedimientoAgregarCliente();
+       Pelicula movieExists = null;
        
-       do{
+        do{
         System.out.print("Ingrese el nombre de la pelicula que desea alquilar: ");
         titulo = entrada.nextLine();
-        movieExist = existenciaPelicula(titulo);
-            if (movieExist != null){
-              generarBoleta(client, movieExist); 
-              System.out.println("Se ha solicitado la pelicula: "+movieExist.getTitulo());
-              movieExist.peliAlquilada();
+        movieExists = existenciaPelicula(titulo); // compruebo que la pelicula exista
+            if (movieExists != null){
+                if(!verificarDisponibilidad(movieExists)){ // verifico disponibilidad
+                    System.out.println("No hay copias disponibles para la pelicula que eligio");
+                } else{   
+              System.out.println("Se ha solicitado la pelicula: \n"+movieExists.verPelicula());
+                movieExists.peliAlquilada(); // se alquila la pelicula descontandola del stock
+              generarBoleta(client, movieExists); // se crea el alquiler
+                }
             } else {
               System.out.println("la pelicula que ha ingresado no existe, por favor vuelva a intentar"); 
               }   
-        } while (movieExist == null);
-      
-       return movieExist;
+        } while (movieExists == null);
+    return movieExists;
     }
       
     public Cliente  procedimientoAgregarCliente (){
          String dni;
          Cliente client = null;
        
-         do { // procedimiento para agregar cliente
-            System.out.print("Ingrese su DNI: ");
-            dni = entrada.nextLine();
+        do { 
+            dni =  JOptionPane.showInputDialog(null, "Ingrese el DNI del cliente: ");
             client = buscarCliente(dni);
-            if (client == null){
-                
+            if (client == null){   
               Integer newClient;
               System.out.println("No se encuentra en el sistema de clientes. Desea agregar un nuevo cliente?");
               System.out.println("Ingrese '1' si asi lo desea, '2' para volver a iniciar");
@@ -131,10 +142,8 @@ public class VideoStore {
               }
             }
         }while (client == null);
-         
-         return client;
-    }
-    
+    return client;
+    }    
     
     public Cliente buscarCliente (String dni){ // encontrar el dni del cliente mediante el toFind
         Cliente toFind = null;   
@@ -155,16 +164,6 @@ public class VideoStore {
            }
         return toFind;
      }
-    
-//     public Boolean existenciaCliente (String dni){ // compruebo si el dni del cliente fue ingresado en el sistema
-//        Boolean flag = false;   
-//        for (int i = 0; i< clientes.size(); i++){
-//            if (clientes.get(i).getDni().equalsIgnoreCase(dni)){
-//                flag = true;     
-//            }             
-//           }
-//        return flag;
-//     }
    
    public Cliente altaDeCliente (){ // nuevo cliente
        Cliente c = new Cliente (); 
@@ -184,12 +183,12 @@ public class VideoStore {
    }
 
    public void generarBoleta (Cliente cliente, Pelicula peli){
-       Alquiler alquiler = new Alquiler (cliente, peli);
-       alquilerPeliculas.add(alquiler);
-       //System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(fechaAlquiler)); // obtiene la fecha del alquiler 
-       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-       // System.out.println(formatter.format(fechaDevolucion)); // obtiene la fecha de la devolucion
-
+      Alquiler alquiler = new Alquiler (cliente, peli);
+      alquilerPeliculas.add(alquiler);
+      alquiler.mostrarAlquiler();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+      System.out.println("Fecha alquiler: "+formatter.format(alquiler.getFechaAlquiler())+"\n" // obtiene la fecha de alquiler
+      + "Fecha devolución: "+formatter.format(alquiler.getFechaDevolucion())); // fecha de la devolucion
    }
    
    public void historialAlquileres (Cliente clientes){
@@ -199,28 +198,26 @@ public class VideoStore {
            // COMPLETAR MAS ADELANTE
        } 
        } else {
-           System.out.println("el cliente no alquilo en el VideoStore");
+           System.out.println("el cliente no alquiló en el VideoStore");
        }
        
    }
    
    public void menu (){
       int menu;
-      JOptionPane.showMessageDialog(null, "Bienvenidos al Video Store! Que desea hacer? \n\n"
-              + "1. Alquilar pelicula \n2. Ver alquileres vigente \n3. Ver lista de peliculas");
+      JOptionPane.showMessageDialog(null, """
+                                          Bienvenidos al Video Store! Que desea hacer? 
+                                          
+                                          1. Alquilar pelicula 
+                                          2. Ver alquileres vigentes 
+                                          3. Ver lista de peliculas""");
 
       menu = Integer.parseInt(JOptionPane.showInputDialog("Digite una opcion"));
       switch (menu){
-          case 1: this.procedimientoAlquilerDePelicula(); 
-             break; 
-          case 2: this.verAlquileresVigentes();
-             break;
-          case 3: this.listaDePeliculas();
-             break;
-          case 4: procedimientoAgregarCliente(); // test
-      }
-      
-      
+          case 1 -> this.procedimientoAlquilerDePelicula();
+          case 2 -> this.verAlquileresVigentes();
+          case 3 -> this.listaDePeliculas();
+      }  
   }
    
    private void cargarDatos(){ // clientes y peliculas existentes
@@ -234,10 +231,10 @@ public class VideoStore {
        agregarCliente(cliente3);
        agregarCliente(cliente4);
        
-     Pelicula pelicula1 = new Pelicula ("Shrek 3", "18/05/2007",93, "EEUU", "Shrek intenta salvar el reino Muy Muy Lejano", 0, Genero.AVENTURA);
-     Pelicula pelicula2 = new Pelicula ("Madagascar", "27/05/2005",86, "EEUU", "Cuatro animales del zoológico de Central Park", 2, Genero.COMEDIA);
-     Pelicula pelicula3 = new Pelicula ("Kungu Fu Panda", "03/07/2008",121, "CHINA", "Un panda que come fideos", 10, Genero.ACCION);
-     Pelicula pelicula4 = new Pelicula ("Como entrenar a tu dragon 3", "23/11/2019",77, "EEUU", "Hipo y Desdentado buscan un legendario paraíso", 10, Genero.DRAMA);
+     Pelicula pelicula1 = new Pelicula ("Shrek 3", "18/05/2007",93, "EEUU", "Shrek intenta salvar el reino Muy Muy Lejano", 0,Genero.AVENTURA,1);
+     Pelicula pelicula2 = new Pelicula ("Madagascar", "27/05/2005",86, "EEUU", "Cuatro animales del zoológico de Central Park", 2, Genero.COMEDIA,6);
+     Pelicula pelicula3 = new Pelicula ("Kungu Fu Panda", "03/07/2008",121, "CHINA", "Un panda que come fideos", 10, Genero.ACCION,2);
+     Pelicula pelicula4 = new Pelicula ("Como entrenar a tu dragon 3", "23/11/2019",77, "EEUU", "Hipo y Desdentado buscan un legendario paraíso", 10,Genero.DRAMA,4);
      
       agregarPelicula(pelicula1); 
       agregarPelicula(pelicula2);
@@ -251,6 +248,5 @@ public class VideoStore {
         System.out.println((contador)+". Genero: "+i);
         contador++;
     }
-    
-}
+   }
 }

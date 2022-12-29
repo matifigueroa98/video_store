@@ -9,11 +9,12 @@ private String fechaDeLanzamiento;
 private Integer duracionEnMinutos;
 private String paisDeOrigen;
 private String descripcion;
-private Integer copiasDisponibles = 10;
+private Integer copiasDisponibles;
 private Genero genero;
-private Integer vecesAlquilada = 0;
+private Integer vecesAlquilada; 
 
-    public Pelicula(String titulo, String fechaDeLanzamiento, Integer duracionEnMinutos, String paisDeOrigen, String descripcion, Integer copiasDisponibles, Genero genero) {
+    public Pelicula(String titulo, String fechaDeLanzamiento, Integer duracionEnMinutos, 
+            String paisDeOrigen, String descripcion, Integer copiasDisponibles, Genero genero, Integer vecesAlquilada) {
         this.titulo = titulo;
         this.fechaDeLanzamiento = fechaDeLanzamiento;
         this.duracionEnMinutos = duracionEnMinutos;
@@ -21,12 +22,13 @@ private Integer vecesAlquilada = 0;
         this.descripcion = descripcion;
         this.copiasDisponibles = copiasDisponibles;
         this.genero = genero;
+        this.vecesAlquilada = vecesAlquilada;
     }
 
     public Pelicula() {
     }
     
-    public String verPelicula (){ // metodo sin usar aun
+    public String verPelicula (){ 
         return "Titulo: "+titulo+"\nFecha de lanzamiento: " + fechaDeLanzamiento + "\nDuracion: " +
         duracionEnMinutos + "\nPais de origen: " + paisDeOrigen + "\nDescripcion: " + descripcion + "\nCopias Disponibles: " + copiasDisponibles + "\nGenero: "
         + genero;
@@ -35,6 +37,14 @@ private Integer vecesAlquilada = 0;
     public void peliAlquilada (){ // cuando se alquila una pelicula se aumenta el contador de las veces alquiladas y se saca una del stock
         this.copiasDisponibles--;
         this.vecesAlquilada++;
+    }
+    
+    public Integer verificarCopiasDisponibles() { // verifico cantidad de copias disponibles en stock
+        Integer copias = 0;
+        if (this.copiasDisponibles > 0) {
+        copias = this.copiasDisponibles;
+        }
+        return copias;
     }
     
     public String getTitulo() {

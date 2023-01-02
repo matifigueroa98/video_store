@@ -11,7 +11,7 @@ public class Main {
        ArrayList <Cliente> clientes = new ArrayList <>();
        ArrayList <Pelicula> peliculas = new ArrayList <>();
        
-        VideoStore roberto = new VideoStore (alquilerPeliculas,clientes,peliculas, "Blockbuster");
+       VideoStore roberto = new VideoStore (alquilerPeliculas,clientes,peliculas, "Blockbuster");
        roberto.menu();
       
 

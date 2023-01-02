@@ -84,6 +84,32 @@ public class VideoStore {
         }
     }
     
+    public void consultarDevoluciones(){
+        for (Alquiler alquiler: alquilerPeliculas){
+            if(alquiler.consultarVigencia() == 0){
+                alquiler.mostrarAlquiler();
+            }
+        }
+    }
+    
+    public void verAlquileresDelCliente (String dni){
+        Cliente cliente = buscarCliente(dni);
+        if(cliente == null){
+            System.out.println("No existe el cliente");
+        } else if(cliente.getPelisAlquiladas() != 0){
+            this.llenarArregloAlquileres(cliente);
+            cliente.mostrarUltimosDiezAlquileres(); 
+        } else{
+            System.out.println("El cliente no hizo ningun alquiler");    
+            }
+    }
+    
+    public void llenarArregloAlquileres (Cliente cliente){
+       for (int i=0; i< alquilerPeliculas.size();i++){
+           cliente.getAlquileres().add(alquilerPeliculas.get(i));
+       }
+    }
+        
     public Boolean verificarDisponibilidad (Pelicula pelicula){
         Boolean flag = false;
         for (int i=0; i< peliculas.size();i++){
@@ -191,32 +217,25 @@ public class VideoStore {
       + "Fecha devolución: "+formatter.format(alquiler.getFechaDevolucion())); // fecha de la devolucion
    }
    
-   public void historialAlquileres (Cliente clientes){
-       if (clientes.getPelisAlquiladas() != 0){
-           System.out.println("HISTORIAL ALQUILERES");
-        for (int i=0;i< this.alquilerPeliculas.size();i++){
-           // COMPLETAR MAS ADELANTE
-       } 
-       } else {
-           System.out.println("el cliente no alquiló en el VideoStore");
-       }
-       
-   }
-   
    public void menu (){
       int menu;
       JOptionPane.showMessageDialog(null, """
                                           Bienvenidos al Video Store! Que desea hacer? 
                                           
-                                          1. Alquilar pelicula 
-                                          2. Ver alquileres vigentes 
-                                          3. Ver lista de peliculas""");
+                                          1. Ver lista de peliculas
+                                          2. Alquilar pelicula
+                                          3. Ver alquileres vigentes 
+                                          4. Consultar devoluciones
+                                          5. Consultar historial de un cliente""");
 
       menu = Integer.parseInt(JOptionPane.showInputDialog("Digite una opcion"));
+      String dni = JOptionPane.showInputDialog("Ingrese el DNI del cliente");
       switch (menu){
-          case 1 -> this.procedimientoAlquilerDePelicula();
-          case 2 -> this.verAlquileresVigentes();
-          case 3 -> this.listaDePeliculas();
+          case 1 -> this.listaDePeliculas();
+          case 2 -> this.procedimientoAlquilerDePelicula();
+          case 3 -> this.verAlquileresVigentes();
+          case 4 -> this.consultarDevoluciones();
+          case 5 -> this.verAlquileresDelCliente(dni); 
       }  
   }
    
@@ -226,10 +245,10 @@ public class VideoStore {
      Cliente cliente3 = new Cliente ("Pepe", "38674856", "2235676228", "constitucion 3446", 0);
      Cliente cliente4 = new Cliente ("Fran", "35876756", "2235356991", "Italia 435", 0);
      
-       agregarCliente(cliente1);
-       agregarCliente(cliente2);
-       agregarCliente(cliente3);
-       agregarCliente(cliente4);
+      agregarCliente(cliente1);
+      agregarCliente(cliente2);
+      agregarCliente(cliente3);
+      agregarCliente(cliente4);
        
      Pelicula pelicula1 = new Pelicula ("Shrek 3", "18/05/2007",93, "EEUU", "Shrek intenta salvar el reino Muy Muy Lejano", 0,Genero.AVENTURA,1);
      Pelicula pelicula2 = new Pelicula ("Madagascar", "27/05/2005",86, "EEUU", "Cuatro animales del zoológico de Central Park", 2, Genero.COMEDIA,6);
@@ -240,6 +259,16 @@ public class VideoStore {
       agregarPelicula(pelicula2);
       agregarPelicula(pelicula3);
       agregarPelicula(pelicula4);
+      
+     Alquiler alquiler1 = new Alquiler (cliente1, pelicula1);
+     Alquiler alquiler2 = new Alquiler (cliente1, pelicula3);
+     Alquiler alquiler3 = new Alquiler (cliente3, pelicula4);
+     Alquiler alquiler4 = new Alquiler (cliente2, pelicula2);
+     
+     agregarAlquiler(alquiler1);
+     agregarAlquiler(alquiler2);
+     agregarAlquiler(alquiler3);
+     agregarAlquiler(alquiler4);
    }
    
    private void mostrarGeneros (){

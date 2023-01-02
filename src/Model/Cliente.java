@@ -1,6 +1,8 @@
 
 package Model;
 
+import java.util.ArrayList;
+
 public class Cliente {
     
 private String nombre;
@@ -8,6 +10,7 @@ private String dni;
 private String telefono; 
 private String direccion;
 private Integer pelisAlquiladas;
+private ArrayList <Alquiler> alquileres = new ArrayList <>();
 
     public Cliente(String nombre,String dni, String telefono, String direccion, Integer pelisAlquiladas) {
         this.nombre = nombre;
@@ -18,6 +21,12 @@ private Integer pelisAlquiladas;
     }
 
     public Cliente() {
+    }
+    
+     public void mostrarUltimosDiezAlquileres(){   
+        for (int i=0; i < 10; i++){
+          this.alquileres.get(i).mostrarAlquiler();
+        }
     }
 
     public String getNombre() {
@@ -59,4 +68,12 @@ private Integer pelisAlquiladas;
     public void setPelisAlquiladas(Integer pelisAlquiladas) {
         this.pelisAlquiladas = pelisAlquiladas;
     }
+
+    public ArrayList<Alquiler> getAlquileres() {
+        return alquileres;
+    }
+
+    public void setAlquileres(ArrayList<Alquiler> alquileres) {
+        this.alquileres = alquileres;
+    }   
 }

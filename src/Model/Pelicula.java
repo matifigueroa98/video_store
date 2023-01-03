@@ -22,7 +22,7 @@ private Integer vecesAlquilada;
         this.descripcion = descripcion;
         this.copiasDisponibles = copiasDisponibles;
         this.genero = genero;
-        this.vecesAlquilada = vecesAlquilada;
+        this.vecesAlquilada = vecesAlquilada = 0;
     }
 
     public Pelicula() {

@@ -92,7 +92,8 @@ public class VideoStore {
         }
     }
     
-    public void verAlquileresDelCliente (String dni){
+    public void verAlquileresDelCliente (){
+        String dni = JOptionPane.showInputDialog("Ingrese el DNI del cliente");
         Cliente cliente = buscarCliente(dni);
         if(cliente == null){
             System.out.println("No existe el cliente");
@@ -216,7 +217,7 @@ public class VideoStore {
       System.out.println("Fecha alquiler: "+formatter.format(alquiler.getFechaAlquiler())+"\n" // obtiene la fecha de alquiler
       + "Fecha devolución: "+formatter.format(alquiler.getFechaDevolucion())); // fecha de la devolucion
    }
-   
+  
    public void menu (){
       int menu;
       JOptionPane.showMessageDialog(null, """
@@ -226,16 +227,17 @@ public class VideoStore {
                                           2. Alquilar pelicula
                                           3. Ver alquileres vigentes 
                                           4. Consultar devoluciones
-                                          5. Consultar historial de un cliente""");
+                                          5. Consultar historial de un cliente
+                                          6. Ver generos""");
 
       menu = Integer.parseInt(JOptionPane.showInputDialog("Digite una opcion"));
-      String dni = JOptionPane.showInputDialog("Ingrese el DNI del cliente");
       switch (menu){
           case 1 -> this.listaDePeliculas();
           case 2 -> this.procedimientoAlquilerDePelicula();
           case 3 -> this.verAlquileresVigentes();
           case 4 -> this.consultarDevoluciones();
-          case 5 -> this.verAlquileresDelCliente(dni); 
+          case 5 -> this.verAlquileresDelCliente(); 
+          case 6 -> this.mostrarGeneros();
       }  
   }
    
